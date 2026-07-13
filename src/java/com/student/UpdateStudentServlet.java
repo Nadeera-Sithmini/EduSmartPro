@@ -31,7 +31,7 @@ public class UpdateStudentServlet extends HttpServlet {
         Connection conn = null;
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_db", "root", "");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_new_db", "root", "");
             
             // ඩේටාබේස් එකේ තියෙන විස්තර අලුත් ඒවායින් UPDATE කරන Query එක
             String sql = "UPDATE students SET fullname=?, email=?, phone=?, dob=?, course=? WHERE id=?";

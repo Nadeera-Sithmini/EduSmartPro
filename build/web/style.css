@@ -5,6 +5,7 @@ body::before { content: ''; position: absolute; width: 300px; height: 300px; bac
 .form-box { background: rgba(31, 40, 51, 0.6); backdrop-filter: blur(15px); border: 1px solid rgba(255, 255, 255, 0.1); padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5); text-align: center; }
 h2 { font-size: 2rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 5px; background: linear-gradient(45deg, #00f2fe, #4facfe); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
 .subtitle { color: #66fcf1; font-size: 0.9rem; margin-bottom: 30px; }
+
 .input-group { position: relative; margin-bottom: 25px; text-align: left; }
 .row { display: flex; gap: 15px; }
 .input-group input, .input-group select { width: 100%; padding: 12px 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 8px; outline: none; color: #fff; font-size: 1rem; transition: 0.3s; }
@@ -12,5 +13,68 @@ h2 { font-size: 2rem; font-weight: 600; letter-spacing: 1px; margin-bottom: 5px;
 .input-group label { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: #aaa; pointer-events: none; transition: 0.3s; }
 .input-group input:focus ~ label, .input-group input:valid ~ label { top: -10px; left: 5px; font-size: 0.8rem; color: #66fcf1; background: #0b0c10; padding: 0 5px; border-radius: 4px; }
 .input-group select:focus ~ .select-label, .input-group select:valid ~ .select-label { top: -10px; left: 5px; font-size: 0.8rem; color: #66fcf1; background: #0b0c10; padding: 0 5px; }
+
+/* ============================================
+   FILE UPLOAD (Profile Picture) - isolated styles
+   ============================================ */
+.file-input-group { text-align: left; margin-bottom: 25px; }
+
+.file-label {
+    display: block;
+    color: #66fcf1;
+    font-size: 0.8rem;
+    margin-bottom: 8px;
+    letter-spacing: 0.5px;
+}
+
+.file-wrapper { position: relative; width: 100%; }
+
+.file-wrapper input[type="file"] {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.file-btn {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 12px 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px dashed rgba(102, 252, 241, 0.4);
+    border-radius: 8px;
+    color: #fff;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.file-wrapper:hover .file-btn {
+    border-color: #66fcf1;
+    box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+}
+
+.file-btn-text {
+    background: linear-gradient(45deg, #00f2fe, #4facfe);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.file-name {
+    color: #aaa;
+    font-size: 0.85rem;
+    margin-left: 12px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .btn-submit { width: 100%; padding: 12px; background: linear-gradient(45deg, #00f2fe, #4facfe); border: none; border-radius: 8px; color: #0b0c10; font-size: 1rem; font-weight: 600; cursor: pointer; transition: 0.3s ease; box-shadow: 0 5px 15px rgba(0, 242, 254, 0.4); }
 .btn-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(0, 242, 254, 0.6); }

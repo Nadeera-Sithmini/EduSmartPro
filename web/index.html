@@ -6,46 +6,212 @@
     <title>Premium Student Registration</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;600&display=swap" rel="stylesheet">
+
+    <!-- 🎨 Custom Dropdown Styles - replaces native <select> white box with a themed dropdown -->
+    <style>
+        .custom-select-wrap {
+            position: relative;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .custom-select-label {
+            color: #66fcf1;
+            font-size: 0.8rem;
+            margin-bottom: 8px;
+            display: block;
+            letter-spacing: 0.5px;
+        }
+
+        /* The visible, styled "select box" */
+        .custom-select-trigger {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 0.95rem;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            user-select: none;
+            transition: 0.3s;
+        }
+
+        .custom-select-trigger.placeholder-active {
+            color: #aaa;
+        }
+
+        .custom-select-wrap.open .custom-select-trigger,
+        .custom-select-trigger:hover {
+            border-color: #66fcf1;
+            box-shadow: 0 0 10px rgba(102, 252, 241, 0.3);
+        }
+
+        .custom-select-trigger .arrow {
+            border: solid #66fcf1;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 4px;
+            transform: rotate(45deg);
+            transition: transform 0.25s ease;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        .custom-select-wrap.open .arrow {
+            transform: rotate(-135deg);
+        }
+
+        /* The dropdown list itself - fully dark themed */
+        .custom-options {
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            right: 0;
+            background: #10151f;
+            border: 1px solid rgba(102, 252, 241, 0.3);
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+            max-height: 220px;
+            overflow-y: auto;
+            z-index: 50;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-8px);
+            transition: all 0.2s ease;
+        }
+
+        .custom-select-wrap.open .custom-options {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .custom-option {
+            padding: 12px 15px;
+            color: #e2e8f0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease;
+        }
+
+        .custom-option:hover,
+        .custom-option.highlighted {
+            background: rgba(102, 252, 241, 0.12);
+            color: #66fcf1;
+        }
+
+        .custom-option.selected {
+            color: #66fcf1;
+            font-weight: 600;
+            background: rgba(102, 252, 241, 0.06);
+        }
+
+        /* Custom scrollbar for the dropdown list */
+        .custom-options::-webkit-scrollbar { width: 6px; }
+        .custom-options::-webkit-scrollbar-track { background: transparent; }
+        .custom-options::-webkit-scrollbar-thumb { background: rgba(102, 252, 241, 0.3); border-radius: 3px; }
+    </style>
 </head>
 <body>
     <div class="container">
         <div class="form-box">
             <h2>Student Registration</h2>
             <p class="subtitle">Join our advanced learning platform</p>
-            
-            <form action="RegisterServlet" method="POST">
+
+            <!-- enctype="multipart/form-data" එක අනිවාර්යයෙන්ම තිබිය යුතුයි -->
+            <!-- autocomplete="off" - Chrome saved email/password suggestions නවත්තනවා -->
+            <form action="RegisterServlet" method="POST" enctype="multipart/form-data" autocomplete="off">
+
+                <!-- 📸 Student Photo Upload -->
+                <div class="file-input-group">
+                    <label class="file-label">Profile Picture</label>
+                    <div class="file-wrapper">
+                        <input type="file" id="photo" name="photo" accept="image/*" required autocomplete="off">
+                        <label for="photo" class="file-btn">
+                            <span class="file-btn-text">Choose Photo</span>
+                            <span class="file-name" id="fileName">No file chosen</span>
+                        </label>
+                    </div>
+                </div>
+
                 <div class="input-group">
-                    <input type="text" name="fullname" required>
+                    <input type="text" name="fullname" autocomplete="off" required>
                     <label>Full Name</label>
                 </div>
-                
+
                 <div class="input-group">
-                    <input type="email" name="email" required>
+                    <input type="email" name="email" autocomplete="off" required>
                     <label>Email Address</label>
                 </div>
 
                 <div class="row">
                     <div class="input-group">
-                        <input type="text" name="phone" required>
+                        <input type="text" name="phone" autocomplete="off" required>
                         <label>Phone Number</label>
                     </div>
                     <div class="input-group">
-                        <input type="date" name="dob" required>
+                        <input type="date" name="dob" autocomplete="off" required>
                     </div>
                 </div>
 
-                <div class="input-group">
-                    <select name="course" required>
-                        <option value="" disabled selected hidden></option>
-                        <option value="se">Software Engineering</option>
-                        <option value="cs">Computer Science</option>
-                        <option value="ds">Data Science</option>
-                    </select>
-                    <label class="select-label">Select Course</label>
+                <!-- ═══════════ Gender - Custom Styled Dropdown ═══════════ -->
+                <div class="custom-select-wrap" data-name="gender" data-required="true">
+                    <span class="custom-select-label">Select Gender</span>
+                    <div class="custom-select-trigger placeholder-active">
+                        <span class="trigger-text">-- Select Gender --</span>
+                        <i class="arrow"></i>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="Male">Male</div>
+                        <div class="custom-option" data-value="Female">Female</div>
+                    </div>
                 </div>
 
+                <!-- ═══════════ Course - Custom Styled Dropdown ═══════════ -->
+                <div class="custom-select-wrap" data-name="course" data-required="true">
+                    <span class="custom-select-label">Select Course</span>
+                    <div class="custom-select-trigger placeholder-active">
+                        <span class="trigger-text">-- Select Course --</span>
+                        <i class="arrow"></i>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option" data-value="programming-fundamentals">Programming Fundamentals</div>
+                        <div class="custom-option" data-value="database-systems">Database Systems</div>
+                        <div class="custom-option" data-value="web-development">Web Development</div>
+                        <div class="custom-option" data-value="data-structures-algorithms">Data Structures &amp; Algorithms</div>
+                        <div class="custom-option" data-value="software-engineering-principles">Software Engineering Principles</div>
+                        <div class="custom-option" data-value="object-oriented-programming">Object Oriented Programming</div>
+                        <div class="custom-option" data-value="mathematics-for-computing">Mathematics for Computing</div>
+                        <div class="custom-option" data-value="operating-systems">Operating Systems</div>
+                        <div class="custom-option" data-value="computer-networks">Computer Networks</div>
+                        <div class="custom-option" data-value="mobile-app-development">Mobile App Development</div>
+                        <div class="custom-option" data-value="machine-learning-fundamentals">Machine Learning Fundamentals</div>
+                        <div class="custom-option" data-value="software-project-management">Software Project Management</div>
+                        <div class="custom-option" data-value="cloud-computing">Cloud Computing</div>
+                    </div>
+                </div>
+
+                <!-- ═══════════ Status - Custom Styled Dropdown ═══════════ -->
+                <div class="custom-select-wrap" data-name="status" data-required="true">
+                    <span class="custom-select-label">Status</span>
+                    <div class="custom-select-trigger">
+                        <span class="trigger-text">Active</span>
+                        <i class="arrow"></i>
+                    </div>
+                    <div class="custom-options">
+                        <div class="custom-option selected" data-value="Active">Active</div>
+                        <div class="custom-option" data-value="Inactive">Inactive</div>
+                    </div>
+                </div>
+
+                <!-- autocomplete="new-password" - Chrome ට මේක login field එකක් නොවේ, අලුත් password field එකක් කියලා signal කරනවා -->
                 <div class="input-group">
-                    <input type="password" name="password" required>
+                    <input type="password" name="password" autocomplete="new-password" required>
                     <label>Password</label>
                 </div>
 
@@ -53,6 +219,87 @@
             </form>
         </div>
     </div>
+
     <script src="script.js"></script>
+
+    <!-- 🎨 Custom Dropdown Logic -->
+    <script>
+        document.querySelectorAll('.custom-select-wrap').forEach(function (wrap) {
+            const trigger = wrap.querySelector('.custom-select-trigger');
+            const triggerText = wrap.querySelector('.trigger-text');
+            const optionsBox = wrap.querySelector('.custom-options');
+            const options = wrap.querySelectorAll('.custom-option');
+            const fieldName = wrap.getAttribute('data-name');
+            const isRequired = wrap.getAttribute('data-required') === 'true';
+
+            // Hidden native <select> - keeps the form submitting exactly like before,
+            // no changes needed on RegisterServlet.java side.
+            const hiddenSelect = document.createElement('select');
+            hiddenSelect.name = fieldName;
+            hiddenSelect.style.display = 'none';
+            if (isRequired) hiddenSelect.required = true;
+
+            const blankOpt = document.createElement('option');
+            blankOpt.value = '';
+            hiddenSelect.appendChild(blankOpt);
+
+            options.forEach(function (opt) {
+                const o = document.createElement('option');
+                o.value = opt.getAttribute('data-value');
+                o.textContent = opt.textContent;
+                if (opt.classList.contains('selected')) {
+                    o.selected = true;
+                    hiddenSelect.value = o.value;
+                }
+                hiddenSelect.appendChild(o);
+            });
+            wrap.appendChild(hiddenSelect);
+
+            // Toggle open/close
+            trigger.addEventListener('click', function (e) {
+                e.stopPropagation();
+                document.querySelectorAll('.custom-select-wrap.open').forEach(function (w) {
+                    if (w !== wrap) w.classList.remove('open');
+                });
+                wrap.classList.toggle('open');
+            });
+
+            // Option click
+            options.forEach(function (opt) {
+                opt.addEventListener('click', function () {
+                    options.forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    triggerText.textContent = opt.textContent;
+                    trigger.classList.remove('placeholder-active');
+                    hiddenSelect.value = opt.getAttribute('data-value');
+                    hiddenSelect.dispatchEvent(new Event('change'));
+                    wrap.classList.remove('open');
+                });
+            });
+        });
+
+        // Close any open dropdown when clicking outside
+        document.addEventListener('click', function () {
+            document.querySelectorAll('.custom-select-wrap.open').forEach(function (w) {
+                w.classList.remove('open');
+            });
+        });
+
+        // Prevent submit if a required custom dropdown has no value selected
+        document.querySelector('form').addEventListener('submit', function (e) {
+            let valid = true;
+            document.querySelectorAll('.custom-select-wrap[data-required="true"]').forEach(function (wrap) {
+                const hidden = wrap.querySelector('select');
+                if (!hidden.value) {
+                    valid = false;
+                    wrap.querySelector('.custom-select-trigger').style.borderColor = '#ff4d4d';
+                }
+            });
+            if (!valid) {
+                e.preventDefault();
+                alert('කරුණාකර සියලුම dropdown fields select කරන්න.');
+            }
+        });
+    </script>
 </body>
 </html>

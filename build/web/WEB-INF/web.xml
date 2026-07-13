@@ -1,36 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="4.0" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
     <servlet>
-        <servlet-name>RegisterServlet</servlet-name>
-        <servlet-class>com.student.RegisterServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>DeleteStudentServlet</servlet-name>
-        <servlet-class>com.student.DeleteStudentServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>UpdateStudentServlet</servlet-name>
-        <servlet-class>com.student.UpdateStudentServlet</servlet-class>
+        <servlet-name>AuditLogger</servlet-name>
+        <servlet-class>com.student.AuditLogger</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>RegisterServlet</servlet-name>
-        <url-pattern>/RegisterServlet</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>com.student.LoginServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/LoginServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>DeleteStudentServlet</servlet-name>
-        <url-pattern>/DeleteStudentServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>UpdateStudentServlet</servlet-name>
-        <url-pattern>/UpdateStudentServlet</url-pattern>
+        <servlet-name>AuditLogger</servlet-name>
+        <url-pattern>/AuditLogger</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
