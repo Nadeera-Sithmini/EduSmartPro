@@ -36,20 +36,20 @@ public class AttendanceServlet extends HttpServlet {
             Class.forName("com.mysql.cj.jdbc.Driver");
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_new_db", "root", "");
 
-            // 0. student_id text code එකෙන් (STU001) students table එකේ actual numeric id එක සොයාගන්නවා
+           
             String lookupSql = "SELECT id FROM students WHERE student_id = ?";
             PreparedStatement lookupStmt = conn.prepareStatement(lookupSql);
             lookupStmt.setString(1, studentCode.trim());
             ResultSet lookupRs = lookupStmt.executeQuery();
 
             if (!lookupRs.next()) {
-                // Student code එකම database එකේ නෑ
+               ෑ
                 response.sendRedirect("attendance-scanner.jsp?status=invalid");
                 return;
             }
             int studentId = lookupRs.getInt("id");
 
-            // 1. අද දවසේ මේ කෝස් එකට මේ ළමයා දැනටමත් ඇටෙන්ඩන්ස් මාක් කරලාද කියලා චෙක් කරනවා
+            
             String checkSql = "SELECT id FROM attendance WHERE student_id = ? AND course_id = ? AND attendance_date = ?";
             PreparedStatement checkStmt = conn.prepareStatement(checkSql);
             checkStmt.setInt(1, studentId);
@@ -60,7 +60,7 @@ public class AttendanceServlet extends HttpServlet {
             if (rs.next()) {
                 response.sendRedirect("attendance-scanner.jsp?status=duplicate");
             } else {
-                // 2. නැත්නම් අලුතින් ඇටෙන්ඩන්ස් රෙකෝඩ් එකක් ඉන්සර්ට් කරනවා
+                
                 String insertSql = "INSERT INTO attendance (student_id, course_id, attendance_date, status) VALUES (?, ?, ?, 'Present')";
                 PreparedStatement insertStmt = conn.prepareStatement(insertSql);
                 insertStmt.setInt(1, studentId);
@@ -69,7 +69,7 @@ public class AttendanceServlet extends HttpServlet {
 
                 int rows = insertStmt.executeUpdate();
                 if (rows > 0) {
-                    // 📝 AUDIT LOG - attendance mark එක record කරනවා
+                    
                     AuditLogger.log("ADD", "Attendance (QR)", "Attendance marked as Present for student code " + studentCode + " (course ID: " + courseId + ")");
 
                     response.sendRedirect("attendance-scanner.jsp?status=success");
