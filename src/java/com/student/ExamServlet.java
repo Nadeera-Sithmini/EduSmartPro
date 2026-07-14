@@ -21,7 +21,7 @@ public class ExamServlet extends HttpServlet {
         String grade = "";
         double gpa = 0.0;
 
-        // ─── GRADE සහ GPA AUTOMATIC ගණනය කිරීම ───
+        // Automatic grade and GPA calculation
         if (marks >= 75) {
             grade = "A";
             gpa = 4.0;
@@ -54,10 +54,10 @@ public class ExamServlet extends HttpServlet {
             int status = ps.executeUpdate();
 
             if(status > 0) {
-                // 📝 AUDIT LOG - marks entry එක record කරනවා
+                // Audit log - record the marks entry
                 AuditLogger.log("ADD", "Exams & GPA", "Marks added for student ID " + studentId + " - Subject ID " + subjectId + " (" + marks + " marks, Grade " + grade + ")");
 
-                // සාර්ථක නම් ආපහු පේජ් එකට යවනවා
+                // Redirect back to the page on success
                 response.sendRedirect("manage-exams.jsp?status=success");
             } else {
                 response.sendRedirect("manage-exams.jsp?status=error");
