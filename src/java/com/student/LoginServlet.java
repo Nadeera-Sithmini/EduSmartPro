@@ -42,7 +42,7 @@ public class LoginServlet extends HttpServlet {
                 HttpSession session = request.getSession();
                 session.setAttribute("studentName", rs.getString("fullname"));
                 
-                // ලොගින් එක සාර්ථක නම් කෙලින්ම අපේ අලුත් Dashboard (view-students.jsp) එකට යවනවා
+            
                 response.sendRedirect("view-students.jsp");
             } else {
                 out.println("<script type='text/javascript'>");
