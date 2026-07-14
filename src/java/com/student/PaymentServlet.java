@@ -27,7 +27,7 @@ public class PaymentServlet extends HttpServlet {
             int status = ps.executeUpdate();
 
             if(status > 0) {
-                // 📝 AUDIT LOG - payment එක record කරනවා
+                // Audit log - record the payment
                 AuditLogger.log("ADD", "Finance & Fees", "Payment of LKR " + amount + " recorded for student ID " + studentId);
 
                 response.sendRedirect("manage-fees.jsp?status=success");
