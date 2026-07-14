@@ -13,7 +13,7 @@
 </head>
 <body>
     <%
-        // URL එකෙන් එන ID එක ගන්නවා
+        
         String studentId = request.getParameter("id");
         String fullname="", email="", phone="", dob="", course="";
         
