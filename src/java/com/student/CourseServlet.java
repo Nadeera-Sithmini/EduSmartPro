@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class CourseServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
-    // 1. DELETE සහ EDIT සඳහා GET රික්වෙස්ට් හැන්ඩ්ල් කිරීම
+    
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -32,7 +32,7 @@ public class CourseServlet extends HttpServlet {
                 conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/student_new_db", "root", "");
                 
                 if ("delete".equals(action)) {
-                    // කෝස් එක Delete කිරීම
+                    
                     String sql = "DELETE FROM courses WHERE id = ?";
                     PreparedStatement statement = conn.prepareStatement(sql);
                     statement.setInt(1, id);
@@ -40,7 +40,7 @@ public class CourseServlet extends HttpServlet {
                     response.sendRedirect("manage-courses.jsp");
                     return;
                 } else if ("edit".equals(action)) {
-                    // Edit කිරීමට අදාළ ඩේටා ටික විතරක් අරන් ආයෙත් පිටුවටම යවනවා (Query String එකෙන්)
+                    
                     String sql = "SELECT * FROM courses WHERE id = ?";
                     PreparedStatement statement = conn.prepareStatement(sql);
                     statement.setInt(1, id);
@@ -65,7 +65,7 @@ public class CourseServlet extends HttpServlet {
         response.sendRedirect("manage-courses.jsp");
     }
 
-    // 2. INSERT සහ UPDATE (SAVE) සඳහා POST රික්වෙස්ට් හැන්ඩ්ල් කිරීම
+   
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -73,7 +73,6 @@ public class CourseServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         
-        // Form Data ලබා ගැනීම
         String courseIdParam = request.getParameter("course_id"); // Edit කරද්දී එන Hidden Field එක
         String courseName = request.getParameter("course_name");
         double courseFee = Double.parseDouble(request.getParameter("course_fee"));
@@ -89,7 +88,7 @@ public class CourseServlet extends HttpServlet {
             String sql;
             PreparedStatement statement;
             
-            // course_id එකක් තිබ්බොත් UPDATE කරනවා, නැත්නම් INSERT කරනවා
+            
             if (courseIdParam != null && !courseIdParam.trim().isEmpty()) {
                 int courseId = Integer.parseInt(courseIdParam);
                 sql = "UPDATE courses SET course_name = ?, course_fee = ?, duration = ?, capacity = ?, prerequisites = ? WHERE id = ?";
