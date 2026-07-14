@@ -9,7 +9,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard - Smart Student Management</title>
-    <!-- Icons වලට Font Awesome ලින්ක් එක -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght=300;400;500;600&display=swap" rel="stylesheet">
     
@@ -29,7 +28,7 @@
             overflow-x: hidden;
         }
 
-        /* ----------------- 🚀 SIDEBAR STYLES ----------------- */
+        /* ----------------- SIDEBAR STYLES ----------------- */
         .sidebar {
             width: 260px;
             background: rgba(15, 23, 42, 0.6);
@@ -111,9 +110,9 @@
             color: #ff6b6b;
         }
 
-        /* ----------------- 🚀 MAIN CONTENT STYLES ----------------- */
+        /* ----------------- MAIN CONTENT STYLES ----------------- */
         .main-content {
-            margin-left: 260px; /* Sidebar එකට ඉඩ තැබීම */
+            margin-left: 260px;
             padding: 40px;
             width: calc(100% - 260px);
         }
@@ -271,7 +270,7 @@
             color: #fff;
         }
         
-        /* --- 📊 DASHBOARD CARDS STYLES --- */
+        /* --- DASHBOARD CARDS STYLES --- */
         .stats-container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -327,7 +326,7 @@
 </head>
 <body>
 
-    <!-- 🛠️ UPDATED SIDEBAR KOTASA -->
+    <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sidebar-brand">
             <i class="fa-solid fa-graduation-cap"></i>
@@ -348,7 +347,7 @@
                 <a href="manage-courses.jsp"><i class="fa-solid fa-book-open"></i> Courses & Subjects</a>
             </li>
             
-            <!-- 3. Attendance (ලින්ක් එක අප්ඩේට් කරන ලදි) -->
+            <!-- 3. Attendance -->
             <li>
                 <a href="attendance-scanner.jsp"><i class="fa-solid fa-calendar-check"></i> Attendance (QR)</a>
             </li>
@@ -379,7 +378,7 @@
         </ul>
     </div>
 
-    <!-- 🛠️ MAIN PANEL KOTASA -->
+    <!-- MAIN PANEL -->
     <div class="main-content">
         <div class="dashboard-card">
             
@@ -389,7 +388,7 @@
                     <i class="fa-solid fa-plus"></i> Add New Student
                 </a>
             </div>
-            <!-- 📊 DASHBOARD OVERVIEW CARDS -->
+            <!-- DASHBOARD OVERVIEW CARDS -->
             <%
                 int totalStudents = 0;
                 int activeStudents = 0;
@@ -400,23 +399,23 @@
                     Class.forName("com.mysql.cj.jdbc.Driver");
                     cardConn = java.sql.DriverManager.getConnection("jdbc:mysql://localhost:3306/student_new_db", "root", "");
                     
-                    // 1. Total Students ගණන ගන්නවා
+                    // Count total students
                     java.sql.Statement stTotal = cardConn.createStatement();
                     java.sql.ResultSet rsTotal = stTotal.executeQuery("SELECT COUNT(*) FROM students");
                     if(rsTotal.next()) totalStudents = rsTotal.getInt(1);
                     
-                    // 2. Active Students ගණන ගන්නවා
+                    // Count active students
                     java.sql.Statement stActive = cardConn.createStatement();
                     java.sql.ResultSet rsActive = stActive.executeQuery("SELECT COUNT(*) FROM students WHERE status='Active'");
                     if(rsActive.next()) activeStudents = rsActive.getInt(1);
                     
-                    // 3. Inactive Students ගණන ගන්නවා
+                    // Count inactive students
                     java.sql.Statement stInactive = cardConn.createStatement();
                     java.sql.ResultSet rsInactive = stInactive.executeQuery("SELECT COUNT(*) FROM students WHERE status='Inactive'");
                     if(rsInactive.next()) inactiveStudents = rsInactive.getInt(1);
                     
                 } catch(Exception e) {
-                    // එරර් එකක් ආවොත් ප්‍රින්ට් නොකර ඉන්නවා
+                    // Silently ignore errors here
                 } finally {
                     if(cardConn != null) cardConn.close();
                 }
@@ -456,8 +455,7 @@
                 </div>
             </div>
 
-            <!-- Search Form -->
-            <!-- 🔍 ADVANCED FILTERS FORM -->
+            <!-- ADVANCED FILTERS FORM -->
             <form action="view-students.jsp" method="GET">
                 <div class="search-container" style="display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 30px;">
                     <!-- Text Search -->
@@ -490,7 +488,7 @@
                 </div>
             </form>
 
-            <!-- 📊 STUDENT LIST TABLE -->
+            <!-- STUDENT LIST TABLE -->
             <div class="table-responsive">
                 <table>
                     <thead>
@@ -518,7 +516,7 @@
                                 String filterGender = request.getParameter("filterGender");
                                 String filterStatus = request.getParameter("filterStatus");
                                 
-                                // Dynamic SQL Query එක හදනවා (1=1 දාන්නේ ඊළඟට AND කෑලි ලේසියෙන් එකතු කරන්න)
+                                // Build the dynamic SQL query (1=1 lets us append AND clauses easily)
                                 String sql = "SELECT * FROM students WHERE 1=1";
                                 
                                 if (search != null && !search.trim().isEmpty()) {
@@ -537,7 +535,7 @@
                                 PreparedStatement pstmt = conn.prepareStatement(sql);
                                 int paramIndex = 1;
                                 
-                                // Parameters ටික පිළිවෙලට Set කරනවා
+                                // Set the parameters in order
                                 if (search != null && !search.trim().isEmpty()) {
                                     pstmt.setString(paramIndex++, "%" + search + "%");
                                     pstmt.setString(paramIndex++, "%" + search + "%");
